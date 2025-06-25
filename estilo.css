@@ -1,0 +1,148 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-area {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#item-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#add-item {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#add-item:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.item {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.item span {
+    flex: 1;
+    font-size: 16px;
+}
+
+.bought {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.bought-button {
+    border: none;
+    background-color: #28a745;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.bought-button:hover {
+    background-color: #1e7e34;
+}
+
+.remove-item {
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-item:hover {
+    background-color: #bd2130;
+}
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.actions button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+#remove-all {
+    background-color: #dc3545;
+}
+
+#remove-all:hover {
+    background-color: #c82333;
+}
+
+#remove-bought {
+    background-color: #ffc107;
+    color: black;
+}
+
+#remove-bought:hover {
+    background-color: #e0a800;
+}
+
+#remove-unbought {
+    background-color: #17a2b8;
+}
+
+#remove-unbought:hover {
+    background-color: #138496;
+}
