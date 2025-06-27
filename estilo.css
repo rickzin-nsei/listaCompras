@@ -35,6 +35,15 @@ h1 {
     font-size: 16px;
 }
 
+#item-quantity,
+#item-price {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
 #add-item {
     background-color: #007bff;
     color: white;
@@ -66,9 +75,20 @@ ul {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
-.item span {
+.item-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.item span {
     font-size: 16px;
+}
+
+.item-details {
+    font-size: 14px;
+    color: #555;
 }
 
 .bought {
@@ -104,6 +124,7 @@ ul {
 .remove-item:hover {
     background-color: #bd2130;
 }
+
 .actions {
     display: flex;
     justify-content: space-between;
@@ -146,23 +167,11 @@ ul {
 #remove-unbought:hover {
     background-color: #138496;
 }
-#item-quantity,
-#item-price {
-    width: 80px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-}
 
-.item-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.item-details {
-    font-size: 14px;
-    color: #555;
+/* Estilo do total geral */
+.total-geral {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: right;
 }

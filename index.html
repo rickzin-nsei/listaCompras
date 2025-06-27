@@ -2,28 +2,29 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lista de Compras</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="estilo.css" />
 </head>
 
 <body>
     <div class="container">
         <h1>🛒 Lista de Compras</h1>
         <div class="input-area">
-            <input type="text" id="item-input" placeholder="Item">
-            <input type="number" id="item-quantity" placeholder="Qtd" min="1">
-            <input type="text" id="item-price" placeholder="Preço (ex: R$10,00)">
+            <input type="text" id="item-input" placeholder="Item" />
+            <input type="number" id="item-quantity" placeholder="Qtd" min="1" />
+            <input type="text" id="item-price" placeholder="Preço (ex: R$10,00)" />
             <button id="add-item">Adicionar</button>
-        </div>        
+        </div>
         <ul id="shopping-list"></ul>
+        <div id="total-geral" class="total-geral">Total Geral: R$0,00</div>
+
         <div class="actions">
             <button id="remove-all">Remover Tudo</button>
             <button id="remove-bought">Remover Comprados</button>
             <button id="remove-unbought">Remover Não Comprados</button>
         </div>
-        
     </div>
 
     <script src="script.js"></script>

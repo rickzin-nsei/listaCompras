@@ -7,14 +7,17 @@ const removeAllBtn = document.getElementById('remove-all');
 const removeBoughtBtn = document.getElementById('remove-bought');
 const removeUnboughtBtn = document.getElementById('remove-unbought');
 
-window.addEventListener('DOMContentLoaded', loadItemsFromStorage);
+window.addEventListener('DOMContentLoaded', () => {
+    loadItemsFromStorage();
+    atualizarTotalGeral();
+});
 
 function saveItemsToStorage() {
     const items = [];
     document.querySelectorAll('.item').forEach(item => {
         const name = item.querySelector('.item-name').textContent;
-        const quantity = item.querySelector('.item-quantity')?.textContent ?? '';
-        const price = item.querySelector('.item-price')?.textContent ?? '';
+        const quantity = item.querySelector('.item-quantity')?.textContent.replace(/\D/g, '') || '1';
+        const price = item.querySelector('.item-price')?.textContent.replace(/[^\d,]/g, '') || '0,00';
         const isBought = item.querySelector('.item-name').classList.contains('bought');
         items.push({ name, quantity, price, bought: isBought });
     });
@@ -28,9 +31,10 @@ function loadItemsFromStorage() {
     items.forEach(({ name, quantity, price, bought }) => {
         createItem(name, quantity, price, bought);
     });
+    atualizarTotalGeral();
 }
 
-function createItem(name, quantity = '', price = '', isBought = false) {
+function createItem(name, quantity = '1', price = '0,00', isBought = false) {
     const listItem = document.createElement('li');
     listItem.className = 'item';
 
@@ -42,11 +46,16 @@ function createItem(name, quantity = '', price = '', isBought = false) {
     itemName.textContent = name;
     if (isBought) itemName.classList.add('bought');
 
+    const qtd = parseInt(quantity) || 1;
+    const precoNumerico = parseFloat(price.replace(',', '.')) || 0;
+    const totalItem = qtd * precoNumerico;
+
     const itemDetails = document.createElement('span');
     itemDetails.className = 'item-details';
     itemDetails.innerHTML = `
-        <span class="item-quantity">Qtd: ${quantity || 1}</span> |
-        <span class="item-price">Preço: ${price || 'R$0,00'}</span>
+        <span class="item-quantity">Qtd: ${qtd}</span> |
+        <span class="item-price">Preço: R$${precoNumerico.toFixed(2).replace('.', ',')}</span> |
+        <span class="item-total">Total: R$${totalItem.toFixed(2).replace('.', ',')}</span>
     `;
 
     infoWrapper.appendChild(itemName);
@@ -58,6 +67,7 @@ function createItem(name, quantity = '', price = '', isBought = false) {
     boughtButton.addEventListener('click', () => {
         itemName.classList.toggle('bought');
         saveItemsToStorage();
+        atualizarTotalGeral();
     });
 
     const removeButton = document.createElement('button');
@@ -66,6 +76,7 @@ function createItem(name, quantity = '', price = '', isBought = false) {
     removeButton.addEventListener('click', () => {
         shoppingList.removeChild(listItem);
         saveItemsToStorage();
+        atualizarTotalGeral();
     });
 
     listItem.appendChild(infoWrapper);
@@ -87,6 +98,7 @@ function addItem() {
     priceInput.value = '';
     itemInput.focus();
     saveItemsToStorage();
+    atualizarTotalGeral();
 }
 
 addItemButton.addEventListener('click', addItem);
@@ -94,13 +106,12 @@ itemInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem()
 quantityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
 priceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
 
-// Remover todos
 removeAllBtn.addEventListener('click', () => {
     shoppingList.innerHTML = '';
     saveItemsToStorage();
+    atualizarTotalGeral();
 });
 
-// Remover comprados
 removeBoughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (item.querySelector('.item-name').classList.contains('bought')) {
@@ -108,9 +119,9 @@ removeBoughtBtn.addEventListener('click', () => {
         }
     });
     saveItemsToStorage();
+    atualizarTotalGeral();
 });
 
-// Remover não comprados
 removeUnboughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (!item.querySelector('.item-name').classList.contains('bought')) {
@@ -118,4 +129,23 @@ removeUnboughtBtn.addEventListener('click', () => {
         }
     });
     saveItemsToStorage();
+    atualizarTotalGeral();
 });
+
+function atualizarTotalGeral() {
+    let total = 0;
+    document.querySelectorAll('.item').forEach(item => {
+        const qtdText = item.querySelector('.item-quantity')?.textContent || 'Qtd: 1';
+        const precoText = item.querySelector('.item-price')?.textContent || 'Preço: R$0,00';
+
+        const quantidade = parseInt(qtdText.replace(/\D/g, '')) || 1;
+        const preco = parseFloat(precoText.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+
+        total += quantidade * preco;
+    });
+
+    const totalGeralElement = document.getElementById('total-geral');
+    if (totalGeralElement) {
+        totalGeralElement.textContent = `Total Geral: R$${total.toFixed(2).replace('.', ',')}`;
+    }
+}
