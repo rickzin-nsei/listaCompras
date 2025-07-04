@@ -7,6 +7,7 @@ const removeAllBtn = document.getElementById('remove-all');
 const removeBoughtBtn = document.getElementById('remove-bought');
 const removeUnboughtBtn = document.getElementById('remove-unbought');
 
+// 1. Ao carregar o conteúdo da página, carrega os itens salvos no localStorage e atualiza o total geral
 window.addEventListener('DOMContentLoaded', () => {
     loadItemsFromStorage();
     atualizarTotalGeral();
@@ -101,17 +102,23 @@ function addItem() {
     atualizarTotalGeral();
 }
 
+// 2. Ao clicar no botão "Adicionar item", adiciona um novo item à lista
 addItemButton.addEventListener('click', addItem);
+// 3. Ao pressionar Enter no campo de nome do item, adiciona um novo item
 itemInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
+// 4. Ao pressionar Enter no campo de quantidade, adiciona um novo item
 quantityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
+// 5. Ao pressionar Enter no campo de preço, adiciona um novo item
 priceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
 
+// 6. Ao clicar no botão "Remover todos", remove todos os itens da lista
 removeAllBtn.addEventListener('click', () => {
     shoppingList.innerHTML = '';
     saveItemsToStorage();
     atualizarTotalGeral();
 });
 
+// 7. Ao clicar no botão "Remover comprados", remove apenas os itens marcados como comprados
 removeBoughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (item.querySelector('.item-name').classList.contains('bought')) {
@@ -122,6 +129,7 @@ removeBoughtBtn.addEventListener('click', () => {
     atualizarTotalGeral();
 });
 
+// 8. Ao clicar no botão "Remover não comprados", remove apenas os itens que ainda não foram marcados como comprados
 removeUnboughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (!item.querySelector('.item-name').classList.contains('bought')) {
