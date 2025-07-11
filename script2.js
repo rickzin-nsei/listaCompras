@@ -1,3 +1,4 @@
+
 const itemInput = document.getElementById('item-input');
 const quantityInput = document.getElementById('item-quantity');
 const priceInput = document.getElementById('item-price');
@@ -6,13 +7,38 @@ const shoppingList = document.getElementById('shopping-list');
 const removeAllBtn = document.getElementById('remove-all');
 const removeBoughtBtn = document.getElementById('remove-bought');
 const removeUnboughtBtn = document.getElementById('remove-unbought');
+const clickCounter = document.getElementById('click-counter');
+const colormodeBtn = document.getElementById('colormode');
+const redmodeBtn = document.getElementById('redmode');
+const h1 = document.getElementById("h1");
 
-// 1. Ao carregar o conteúdo da página, carrega os itens salvos no localStorage e atualiza o total geral
+let clickCount = parseInt(localStorage.getItem("clickCount")) || 0;
+
+// 1. Carrega conteúdo salvo no localStorage
 window.addEventListener('DOMContentLoaded', () => {
     loadItemsFromStorage();
     atualizarTotalGeral();
+
+    // Aplica visuais salvos
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    if (localStorage.getItem('redMode') === 'true') {
+        document.body.classList.add('redmode');
+        h1.style.color = "rgb(255, 255, 255)";
+    }
+
+    // Aplica contador
+    atualizarContador();
 });
 
+// Atualiza contador na tela e localStorage
+function atualizarContador() {
+    clickCounter.textContent = `Clique no botão "Adicionar": ${clickCount} ${clickCount === 1 ? 'vez' : 'vezes'}`;
+    localStorage.setItem("clickCount", clickCount.toString());
+}
+
+// Salva itens no localStorage
 function saveItemsToStorage() {
     const items = [];
     document.querySelectorAll('.item').forEach(item => {
@@ -32,7 +58,6 @@ function loadItemsFromStorage() {
     items.forEach(({ name, quantity, price, bought }) => {
         createItem(name, quantity, price, bought);
     });
-    atualizarTotalGeral();
 }
 
 function createItem(name, quantity = '1', price = '0,00', isBought = false) {
@@ -102,23 +127,22 @@ function addItem() {
     atualizarTotalGeral();
 }
 
-// 2. Ao clicar no botão "Adicionar item", adiciona um novo item à lista
-addItemButton.addEventListener('click', addItem);
-// 3. Ao pressionar Enter no campo de nome do item, adiciona um novo item
-itemInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
-// 4. Ao pressionar Enter no campo de quantidade, adiciona um novo item
-quantityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
-// 5. Ao pressionar Enter no campo de preço, adiciona um novo item
-priceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItem(); });
+// Eventos de adicionar item
+addItemButton.addEventListener('click', () => {
+    addItem();
+    clickCount++;
+    atualizarContador();
+});
+itemInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItemButton.click(); });
+quantityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItemButton.click(); });
+priceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addItemButton.click(); });
 
-// 6. Ao clicar no botão "Remover todos", remove todos os itens da lista
+// Botões de remoção
 removeAllBtn.addEventListener('click', () => {
     shoppingList.innerHTML = '';
     saveItemsToStorage();
     atualizarTotalGeral();
 });
-
-// 7. Ao clicar no botão "Remover comprados", remove apenas os itens marcados como comprados
 removeBoughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (item.querySelector('.item-name').classList.contains('bought')) {
@@ -128,8 +152,6 @@ removeBoughtBtn.addEventListener('click', () => {
     saveItemsToStorage();
     atualizarTotalGeral();
 });
-
-// 8. Ao clicar no botão "Remover não comprados", remove apenas os itens que ainda não foram marcados como comprados
 removeUnboughtBtn.addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => {
         if (!item.querySelector('.item-name').classList.contains('bought')) {
@@ -140,15 +162,14 @@ removeUnboughtBtn.addEventListener('click', () => {
     atualizarTotalGeral();
 });
 
+// Total geral
 function atualizarTotalGeral() {
     let total = 0;
     document.querySelectorAll('.item').forEach(item => {
         const qtdText = item.querySelector('.item-quantity')?.textContent || 'Qtd: 1';
         const precoText = item.querySelector('.item-price')?.textContent || 'Preço: R$0,00';
-
         const quantidade = parseInt(qtdText.replace(/\D/g, '')) || 1;
         const preco = parseFloat(precoText.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-
         total += quantidade * preco;
     });
 
@@ -157,3 +178,16 @@ function atualizarTotalGeral() {
         totalGeralElement.textContent = `Total Geral: R$${total.toFixed(2).replace('.', ',')}`;
     }
 }
+
+// Alterna modo claro/escuro
+colormodeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+});
+
+// Alterna modo vermelho
+redmodeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('redmode');
+    h1.style.color = document.body.classList.contains('redmode') ? "rgb(255, 255, 255)" : "";
+    localStorage.setItem('redMode', document.body.classList.contains('redmode'));
+});

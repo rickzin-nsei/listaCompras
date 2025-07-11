@@ -66,6 +66,7 @@ ul {
 
 .item {
     background: #f9f9f9;
+    color: black;
     padding: 12px;
     border-radius: 8px;
     display: flex;
@@ -139,7 +140,7 @@ ul {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    color: white;
+    color: black;
     transition: background-color 0.3s;
 }
 
@@ -174,4 +175,21 @@ ul {
     font-weight: bold;
     font-size: 18px;
     text-align: right;
+}
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .container {
+    background-color: gray;
+}
+
+body.redmode {
+    background-color: red;
+    color: white;
+}
+body.redmode .container {
+    background-color: darkred;
+    border-color: black;
 }
